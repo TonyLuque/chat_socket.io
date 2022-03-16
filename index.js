@@ -18,6 +18,13 @@ io.on("connection", async (socket) => {
     io.emit("chat message", msg);
   });
 
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
+  });
+});
+
+// Se puede usar solo el io para emitir por fuera de la conexion
+(async function () {
   let count = 0;
   while (count < 10) {
     io.emit("notification", count);
@@ -25,11 +32,7 @@ io.on("connection", async (socket) => {
     count++;
     await new Promise((resolve) => setTimeout(resolve, 2000));
   }
-
-  socket.on("disconnect", () => {
-    console.log("user disconnected");
-  });
-});
+})();
 
 server.listen(process.env.PORT, () => {
   console.log(`server listen in port ${process.env.PORT}`);
